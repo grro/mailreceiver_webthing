@@ -17,7 +17,7 @@ To consume incoming mails as a HTTP-based stream, open a websocket connection to
 ```
 import websocket
 
-ws = websocket.WebSocketApp("ws://localhost:8080/", on_message=lambda ws, message: print(message))
+ws = websocket.WebSocketApp("ws://192.168.0.24:8080/", on_message=lambda ws, message: print(message))
 ws.run_forever()
 ```
 
