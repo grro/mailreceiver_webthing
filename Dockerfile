@@ -1,7 +1,7 @@
 FROM python:3.9.1-alpine
 
 ENV port 8080
-ENV mailserver_port 2525
+ENV mailserver_port 25
 
 LABEL org.label-schema.schema-version="1.0" \
       org.label-schema.name="MailReceiver" \
