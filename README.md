@@ -32,7 +32,7 @@ To run this software you may use Docker or [PIP](https://realpython.com/what-is-
 
 **Docker approach**
 ```
-sudo docker run -p 8080:8080 -p 2525:2525 -t grro/mailreceiver:0.0.1
+sudo docker run -p 8080:8080 -p 25:25 -t grro/mailreceiver:0.0.1
 ```
 
 **PIP approach**
@@ -42,18 +42,18 @@ sudo pip install mailreceiver_webthing
 
 After this installation you may start the webthing http endpoint inside your python code or via command line using
 ```
-sudo mailreceiver --command listen --port 8080 --mailserver_port 2525
+sudo mailreceiver --command listen --port 8080 --mailserver_port 25
 ```
-Here, the webthing API will be bind to on port 8080. Furthermore, the mail server will be bein to port 2525 THe WebThing server 
+Here, the webthing API will be bind to on port 8080. Furthermore, the mail server will be bein to port 25 THe WebThing server 
 provides [mDNS](https://en.wikipedia.org/wiki/Multicast_DNS) to enable clients discovering the WebThing interfaces.
 
 By running a *systemd-based Linux distribution* you may use the *register* command to register and start the webthing service as systemd unit.
 By doing this the webthing service will be started automatically on boot. Starting the server manually using the *listen* command is no longer necessary.
 ```
-sudo mailreceiver --command register --port 8080 --mailserver_port 2525
+sudo mailreceiver --command register --port 8080 --mailserver_port 25
 ```  
 
 To start the mailreceiver use the listen command
 ```
-sudo mailreceiver --command listen --port 8080 --mailserver_port 2525
+sudo mailreceiver --command listen --port 8080 --mailserver_port 25
 ```
