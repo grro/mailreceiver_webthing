@@ -32,7 +32,7 @@ To run this software you may use Docker or [PIP](https://realpython.com/what-is-
 
 **Docker approach**
 ```
-sudo docker run -p 8080:8080 -p 25:25 -t grro/mailreceiver:0.0.1
+sudo docker run -p 8080:8080 -p 25:25 -t grro/mailreceiver:0.0.3
 ```
 
 **PIP approach**
