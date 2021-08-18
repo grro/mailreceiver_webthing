@@ -6,7 +6,7 @@ from typing import Dict
 import os
 
 
-PACKAGENAME = 'mail_receiver_webthing'
+PACKAGENAME = 'mailreceiver_webthing'
 ENTRY_POINT = "mailrecevier"
 DESCRIPTION = "A web connected mail receiver"
 
