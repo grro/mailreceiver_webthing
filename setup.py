@@ -1,7 +1,7 @@
 from setuptools import setup
 from os import path
 
-PACKAGENAME = 'mailreceiver'
+PACKAGENAME = 'mailreceiver_webthing'
 ENTRY_POINT = "mailreceiver"
 DESCRIPTION = "A web connected mail receiver"
 
