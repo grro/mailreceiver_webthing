@@ -62,7 +62,7 @@ class InternetApp(App):
             return True
         elif args.command == 'register' and (args.mailserver_port > 0):
             print("register " + self.packagename + " on port " + str(args.port))
-            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, port=port, mail_server_port=args.mailserver_port, verbose=verbose)
+            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, port=port, mailserver_port=args.mailserver_port, verbose=verbose)
             self.unit.register(port, unit)
             return True
         else:
