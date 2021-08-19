@@ -1,5 +1,5 @@
 from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
-from mailreceiver.mail_server import MailServer
+from mailreceiver_webthing.mail_server import MailServer
 from email.utils import formatdate
 import uuid
 import tornado.ioloop
