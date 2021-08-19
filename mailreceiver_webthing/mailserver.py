@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import asynchat
-import socket
 import base64
 import ssl
 import logging
