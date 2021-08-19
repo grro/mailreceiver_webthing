@@ -249,7 +249,7 @@ class SMTPChanel(BaseSMTPChannel):
 
 
 
-class MailServer(BaseSMTPServer):
+class SimpleMailServer(BaseSMTPServer):
     channel_class = SMTPChanel
 
     def __init__(self, port: int, message_handler, credential_validator = None):

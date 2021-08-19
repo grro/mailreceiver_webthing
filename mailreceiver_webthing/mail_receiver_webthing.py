@@ -1,5 +1,5 @@
 from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
-from mailreceiver_webthing.mailserver import MailServer
+from mailreceiver_webthing.mailserver import SimpleMailServer
 from email.utils import formatdate
 import uuid
 import tornado.ioloop
@@ -46,7 +46,7 @@ def run_server(port: int, mail_server_port: int, description: str):
 
     mail_receiver_webthing = MailReceiverThing(description)
 
-    mail_server = MailServer(mail_server_port, mail_receiver_webthing.on_message)
+    mail_server = SimpleMailServer(mail_server_port, mail_receiver_webthing.on_message)
     threading.Thread(target=mail_server.start).start()
 
     thing = SingleThing(mail_receiver_webthing)
