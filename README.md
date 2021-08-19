@@ -16,11 +16,12 @@ To consume incoming mails as a HTTP-based stream, open a websocket connection to
 ```
 import websocket
 
+# webthing´s websocket address is ws://192.168.0.24:8080/
 ws = websocket.WebSocketApp("ws://192.168.0.24:8080/", on_message=lambda ws, message: print(message))
 ws.run_forever()
 ```
 
-This example above prints the incoming messages such as shown below
+This example above prints the stream of incoming mails such as shown below
 ```
 {"messageType": "propertyStatus", "data": {"mail": "Received: from 172.17.0.1:56760 by mail-receiver id f67213dd-83e2-46bf-8eab-ce91d626f5ba\n for SHE@EXAMPLE.COM; Tue, 17 Aug 2021 07:31:57 +0000\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nSubject: Hello\nFrom: ME@EXAMPLE.COM\nTo: SHE@EXAMPLE.COM\n\nHi, how are you today?"}}
 {"messageType": "propertyStatus", "data": {"mail": "Received: from 172.17.0.1:56766 by mail-receiver id 264ab273-6a71-4394-a3ea-86ef395ebc71\n for THEY@EXAMPLE.COM; Tue, 17 Aug 2021 07:42:23 +0000\nContent-Type: text/plain; charset=\"us-ascii\"\nMIME-Version: 1.0\nContent-Transfer-Encoding: 7bit\nSubject: Re: Hello\nFrom: YOU@EXAMPLE.COM\nTo: THEY@EXAMPLE.COM\n\nNot too bad!"}}
@@ -31,7 +32,7 @@ To run this software you may use Docker or [PIP](https://realpython.com/what-is-
 
 **Docker approach**
 ```
-sudo docker run -p 8080:8080 -p 2525:2525 -t grro/mailreceiver:0.0.9
+sudo docker run -p 8080:8080 -p 2525:2525 -t grro/mailreceiver:0.0.11
 ```
 
 **PIP approach**
