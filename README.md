@@ -31,12 +31,12 @@ To run this software you may use Docker or [PIP](https://realpython.com/what-is-
 
 **Docker approach**
 ```
-sudo docker run -p 8080:8080 -p 2525:2525 -t grro/mailreceiver:0.0.7
+sudo docker run -p 8080:8080 -p 2525:2525 -t grro/mailreceiver:0.0.9
 ```
 
 **PIP approach**
 ```
-sudo pip install mailreceiver_webthing
+sudo pip install mailreceiver-webthing
 ```
 
 After this installation you may start the webthing http endpoint inside your python code or via command line using

@@ -7,7 +7,7 @@ import os
 
 
 PACKAGENAME = 'mailreceiver_webthing'
-ENTRY_POINT = "mailrecevier"
+ENTRY_POINT = "mailreceiver"
 DESCRIPTION = "A web connected mail receiver"
 
 

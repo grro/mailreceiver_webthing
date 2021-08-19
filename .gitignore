@@ -132,3 +132,6 @@ dmypy.json
 /mailreceiver_webthing.iml
 /.idea/runConfigurations.xml
 /.idea/misc.xml
+/.idea/.gitignore
+/.idea/mailreceiver_webthing.iml
+/.idea/modules.xml
