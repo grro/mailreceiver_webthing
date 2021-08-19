@@ -254,9 +254,7 @@ class MailServer(BaseSMTPServer):
     channel_class = SMTPChanel
 
     def __init__(self, port: int, message_handler, credential_validator = None):
-        hostname = socket.gethostname().lower()
-        super().__init__((hostname, port), None)
-        self.hostname = hostname
+        super().__init__(("", port), None)
         self.port = port
         self.credential_validator = credential_validator
         self.starttls_active = False
@@ -267,7 +265,7 @@ class MailServer(BaseSMTPServer):
 
     def start(self):
         try:
-            logging.info("mail server listening on " + self.hostname + ":" + str(self.port))
+            logging.info("mail server listening on " + str(self.port))
             asyncore.loop()
         except Exception as e:
             print(e)
