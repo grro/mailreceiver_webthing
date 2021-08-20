@@ -1,6 +1,5 @@
-import logging
-from mailreceiver.mail_receiver_webthing import run_server
-from mailreceiver.app import App
+from mailreceiver_webthing.mail_receiver_webthing import run_server
+from mailreceiver_webthing.app import App
 from string import Template
 from typing import Dict
 import os
