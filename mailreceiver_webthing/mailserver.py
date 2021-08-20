@@ -252,8 +252,8 @@ class SMTPChanel(BaseSMTPChannel):
 class MailServer(BaseSMTPServer):
     channel_class = SMTPChanel
 
-    def __init__(self, port: int, message_handler, credential_validator = None):
-        super().__init__(("", port), None)
+    def __init__(self, port: int, message_handler, hostname: str = "0.0.0.0", credential_validator = None):
+        super().__init__((hostname, port), None)
         self.port = port
         self.credential_validator = credential_validator
         self.starttls_active = False
