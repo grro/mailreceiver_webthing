@@ -32,6 +32,18 @@ class MailReceiverThing(Thing):
                          'readOnly': False,
                      }))
 
+        self.senders = Value("")
+        self.add_property(
+            Property(self,
+                     'senders',
+                     self.senders,
+                     metadata={
+                         'title': 'isender addresses',
+                         'type': 'string',
+                         'description': 'the newly senders addresses',
+                         'readOnly': True,
+                     }))
+
         self.ignored_to = Value("")
         self.add_property(
             Property(self,
@@ -40,7 +52,7 @@ class MailReceiverThing(Thing):
                      metadata={
                          'title': 'ignored receiver addresses',
                          'type': 'string',
-                         'description': 'the newly ignored recevier addreses',
+                         'description': 'the newly ignored receiver addresses',
                          'readOnly': True,
                      }))
 
@@ -61,9 +73,9 @@ class MailReceiverThing(Thing):
     def on_message(self, peer, mailfrom, rcpttos, data):
         mail = "Received: from " + peer[0] + ":" + str(peer[1]) + " by mail-receiver id " + str(uuid.uuid4()) + "\n for " + \
                ", ".join(rcpttos) + "; " + formatdate(localtime=True) + "\n" + data.decode("ascii")
-        self.ioloop.add_callback(self.__update_props, mail, rcpttos)
+        self.ioloop.add_callback(self.__update_props, mail, mailfrom, rcpttos)
 
-    def __update_props(self, mail, rcpttos):
+    def __update_props(self, mail, mailfrom, rcpttos):
         from_pattern = self.to_pattern.get().strip()
         matched = False
         if len(from_pattern) <= 0:
@@ -83,6 +95,13 @@ class MailReceiverThing(Thing):
                     self.ignored_to.notify_of_external_update(', '.join(ignored))
         if matched:
             self.mail.notify_of_external_update(mail)
+
+        sdrs = list(self.senders.get().split(", "))
+        if mailfrom not in sdrs:
+            sdrs.append(mailfrom)
+            if len(sdrs) > 30:
+                sdrs = sdrs[:30]
+            self.senders.notify_of_external_update(', '.join(sdrs))
 
 
 def run_server(port: int, mail_server_port: int, to_pattern: str, description: str):
