@@ -18,7 +18,7 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=$entrypoint --command listen --port $port --mailserver_port $mailserver_port
+ExecStart=$entrypoint --command listen --port $port --mailserver_port $mailserver_port --to_pattern $to_pattern 
 SyslogIdentifier=$packagename
 StandardOutput=syslog
 StandardError=syslog
@@ -50,18 +50,18 @@ class InternetApp(App):
 
     def do_add_argument(self, parser):
         parser.add_argument('--mailserver_port', metavar='mailserver_port', required=False, type=int, default=25, help='the port number of the mail server')
-
+        parser.add_argument('--to_pattern', metavar='to_pattern', required=False, type=str, default="", help='the regex pattern of the receiver address to be matched')
 
     def do_additional_listen_example_params(self):
-        return "--mailserver_port 25"
+        return "--mailserver_port 25 --to_pattern system.231.233@example.org"
 
     def do_process_command(self, command:str, port: int, verbose: bool, args) -> bool:
         if command == 'listen' and (args.mailserver_port > 0):
-            run_server(port, args.mailserver_port, self.description)
+            run_server(port, args.mailserver_port, args.to_pattern, self.description)
             return True
         elif args.command == 'register' and (args.mailserver_port > 0):
             print("register " + self.packagename + " on port " + str(args.port))
-            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, port=port, mailserver_port=args.mailserver_port, verbose=verbose)
+            unit = UNIT_TEMPLATE.substitute(packagename=self.packagename, entrypoint=self.entrypoint, port=port, mailserver_port=args.mailserver_port, to_pattern=args.to_pattern, verbose=verbose)
             self.unit.register(port, unit)
             return True
         else:
