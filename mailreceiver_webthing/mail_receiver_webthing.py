@@ -32,30 +32,6 @@ class MailReceiverThing(Thing):
                          'readOnly': False,
                      }))
 
-        self.senders = Value("")
-        self.add_property(
-            Property(self,
-                     'senders',
-                     self.senders,
-                     metadata={
-                         'title': 'isender addresses',
-                         'type': 'string',
-                         'description': 'the newly senders addresses',
-                         'readOnly': True,
-                     }))
-
-        self.ignored_to = Value("")
-        self.add_property(
-            Property(self,
-                     'ignored_to',
-                     self.ignored_to,
-                     metadata={
-                         'title': 'ignored receiver addresses',
-                         'type': 'string',
-                         'description': 'the newly ignored receiver addresses',
-                         'readOnly': True,
-                     }))
-
         self.log = Value("")
         self.add_property(
             Property(self,
@@ -99,26 +75,15 @@ class MailReceiverThing(Thing):
                     matched = True
                 else:
                     logging.info('ignoring receiver address' + rcptto)
-                    ignored = list(self.ignored_to.get().split(", "))
-                    if rcptto not in ignored:
-                        ignored.append(rcptto)
-                        if len(ignored) > 30:
-                            ignored = ignored[:30]
-                    self.ignored_to.notify_of_external_update(', '.join(ignored))
         if matched:
-            log_entries = list(self.log.get().split(", "))
-            log_entries.append("[" + formatdate(localtime=True) + "] " + mailfrom + " (" + peer[0] + ":" + str(peer[1]) + ")  ->  " + ", ".join(rcpttos))
-            if len(log_entries) > 50:
-                log_entries = log_entries[:50]
-            self.log.notify_of_external_update(', '.join(log_entries))
             self.mail.notify_of_external_update(mail)
 
-        sdrs = list(self.senders.get().split(", "))
-        if mailfrom not in sdrs:
-            sdrs.append(mailfrom)
-            if len(sdrs) > 30:
-                sdrs = sdrs[:30]
-            self.senders.notify_of_external_update(', '.join(sdrs))
+        log_entries = list(self.log.get().split(", "))
+        operation = "ACCEPTED" if matched else "IGNORED "
+        log_entries.append("[" + formatdate(localtime=True) + "] " + operation + "  " + mailfrom + " (" + peer[0] + ":" + str(peer[1]) + ")  ->  " + ", ".join(rcpttos))
+        if len(log_entries) > 50:
+            log_entries = log_entries[:50]
+        self.log.notify_of_external_update(', '.join(log_entries))
 
 
 def run_server(port: int, mail_server_port: int, to_pattern: str, description: str):
