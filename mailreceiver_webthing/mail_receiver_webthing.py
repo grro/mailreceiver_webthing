@@ -80,7 +80,7 @@ class MailReceiverThing(Thing):
 
         log_entries = list(self.log.get().split(", "))
         operation = "ACCEPTED" if matched else "IGNORED "
-        log_entries.append("[" + formatdate(localtime=True) + "] " + operation + "  " + mailfrom + " (" + peer[0] + ":" + str(peer[1]) + ")  ->  " + ", ".join(rcpttos))
+        log_entries.append("[" + formatdate(localtime=True) + "] " + operation + " - " + mailfrom + " (" + peer[0] + ":" + str(peer[1]) + ")  ->  " + ", ".join(rcpttos))
         if len(log_entries) > 50:
             log_entries = log_entries[:50]
         self.log.notify_of_external_update(', '.join(log_entries))
