@@ -1,5 +1,5 @@
 from webthing import (SingleThing, Property, Thing, Value, WebThingServer)
-from mailreceiver_webthing.mailserver import MailServer
+from mailreceiver_webthing.mailserver import MailServer, PasswordFileCredentialValidator
 from email.utils import formatdate
 import re
 import uuid
@@ -86,10 +86,11 @@ class MailReceiverThing(Thing):
         self.log.notify_of_external_update(', '.join(log_entries))
 
 
-def run_server(port: int, mail_server_port: int, to_pattern: str, description: str):
+def run_server(port: int, mail_server_port: int, to_pattern: str, description: str, passwordfile: str = None):
     mail_receiver_webthing = MailReceiverThing(to_pattern, description)
 
-    mail_server = MailServer(mail_server_port, mail_receiver_webthing.on_message)
+    credential_validator = None if passwordfile is None else PasswordFileCredentialValidator(passwordfile)
+    mail_server = MailServer(mail_server_port, mail_receiver_webthing.on_message, credential_validator=credential_validator)
     threading.Thread(target=mail_server.start).start()
 
     thing = SingleThing(mail_receiver_webthing)

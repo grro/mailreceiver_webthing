@@ -16,15 +16,23 @@ class CredentialValidator(ABC):
         return False
 
 
-class InMemoryCredentialValidator(CredentialValidator):
+class PasswordFileCredentialValidator(CredentialValidator):
 
-    def __init__(self, usr_pwd_map):
-        self.usr_pwd_map = usr_pwd_map
+    def __init__(self, passwordfile):
+        self.usr_pwd_map = {}
+        with open(passwordfile, 'r') as file:
+            for line in file.readlines():
+                try:
+                    idx = line.index(':')
+                    self.usr_pwd_map[line[:idx].strip()] = line[idx+1:].strip()
+                except Exception as e:
+                    logging.info("invalid entry '" + line + "' in password file " + passwordfile)
 
     def validate(self, user, password):
         if user in self.usr_pwd_map:
             if password == self.usr_pwd_map[user]:
                 return True
+        logging.info("auth validation failed for " + user)
         return False
 
 
