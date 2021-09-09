@@ -56,6 +56,18 @@ class MailReceiverThing(Thing):
                          'readOnly': True,
                      }))
 
+        self.log = Value("")
+        self.add_property(
+            Property(self,
+                     'log',
+                     self.log,
+                     metadata={
+                         'title': 'log',
+                         'type': 'string',
+                         'description': 'log of newly received mails',
+                         'readOnly': True,
+                     }))
+
         self.mail = Value("")
         self.add_property(
             Property(self,
@@ -73,9 +85,9 @@ class MailReceiverThing(Thing):
     def on_message(self, peer, mailfrom, rcpttos, data):
         mail = "Received: from " + peer[0] + ":" + str(peer[1]) + " by mail-receiver id " + str(uuid.uuid4()) + "\n for " + \
                ", ".join(rcpttos) + "; " + formatdate(localtime=True) + "\n" + data.decode("ascii")
-        self.ioloop.add_callback(self.__update_props, mail, mailfrom, rcpttos)
+        self.ioloop.add_callback(self.__update_props, peer, mailfrom, rcpttos, mail)
 
-    def __update_props(self, mail, mailfrom, rcpttos):
+    def __update_props(self, peer, mailfrom, rcpttos, mail):
         from_pattern = self.to_pattern.get().strip()
         matched = False
         if len(from_pattern) <= 0:
@@ -89,11 +101,16 @@ class MailReceiverThing(Thing):
                     logging.info('ignoring receiver address' + rcptto)
                     ignored = list(self.ignored_to.get().split(", "))
                     if rcptto not in ignored:
-                        ignored.append((rcptto))
+                        ignored.append(rcptto)
                         if len(ignored) > 30:
                             ignored = ignored[:30]
                     self.ignored_to.notify_of_external_update(', '.join(ignored))
         if matched:
+            log_entries = list(self.log.get().split(", "))
+            log_entries.append("[" + formatdate(localtime=True) + "] " + mailfrom + " (" + peer[0] + ":" + str(peer[1]) + ")  ->  " + ", ".join(rcpttos))
+            if len(log_entries) > 50:
+                log_entries = log_entries[:50]
+            self.log.notify_of_external_update(', '.join(log_entries))
             self.mail.notify_of_external_update(mail)
 
         sdrs = list(self.senders.get().split(", "))
