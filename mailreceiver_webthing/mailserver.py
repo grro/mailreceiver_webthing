@@ -23,8 +23,12 @@ class PasswordFileCredentialValidator(CredentialValidator):
         with open(passwordfile, 'r') as file:
             for line in file.readlines():
                 try:
-                    idx = line.index(':')
-                    self.usr_pwd_map[line[:idx].strip()] = line[idx+1:].strip()
+                    if len(line.strip()) > 1 and not line.strip().startswith("#"):
+                        idx = line.index(':')
+                        name = line[:idx].strip()
+                        pwd = line[idx+1:].strip()
+                        self.usr_pwd_map[name] = pwd
+                        logging.info("password entry '" + name + "' read")
                 except Exception as e:
                     logging.info("invalid entry '" + line + "' in password file " + passwordfile)
 
@@ -272,7 +276,7 @@ class MailServer(BaseSMTPServer):
 
     def start(self):
         try:
-            logging.info("mail server listening on " + str(self.port))
+            logging.info("mail server listening on " + str(self.port) + " " if self.credential_validator is None else " (with auth)")
             asyncore.loop()
         except Exception as e:
             print(e)

@@ -51,7 +51,7 @@ class InternetApp(App):
     def do_add_argument(self, parser):
         parser.add_argument('--mailserver_port', metavar='mailserver_port', required=False, type=int, default=25, help='the port number of the mail server')
         parser.add_argument('--to_pattern', metavar='to_pattern', required=False, type=str, default=".*@.*", help='the regex pattern of the receiver address to be matched')
-        parser.add_argument('--passwordfile', metavar='passwordfile', required=False, type=str, help='the password file (username and password (separated by colon) per line)')
+        parser.add_argument('--passwordfile', metavar='passwordfile', required=False, type=str, help='the password file (username and password pair (separated by colon) per line)')
 
     def do_additional_listen_example_params(self):
         return "--mailserver_port 25 --to_pattern system.231.233@example.org"
